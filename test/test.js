@@ -50,7 +50,7 @@ describe("Staking contract tests", function () {
     let arr=[];
     var arr1000linear=[];
     var arr1000shuffle=[];
-    var amountItems=1000;
+    var amountItems=100;
     for (let i = 0; i< amountItems; i++) {
         arr[i] = i;
     }
@@ -64,13 +64,61 @@ describe("Staking contract tests", function () {
         MockContractInstance = await MockContractFactory.deploy();
         
     });
+
+    it("set/get", async() => {
+        let key = 1;
+        let val = 3;
+        await MockContractInstance.set(key, val);
+
+        let expectVal = await MockContractInstance.get(key);
+        await expect(val).to.be.eq(expectVal);
+
+        
+    }); 
+
+    it("set/get linear data", async() => {
+        let expectVal;
+        for (let i = 0; i< arr1000linear.length; i++) {
+            await MockContractInstance.set(arr1000linear[i], arr1000linear[i]);
+        }
+        for (let i = 0; i< arr1000linear.length; i++) {
+            expectVal = await MockContractInstance.get(arr1000linear[i]);
+            await expect(arr1000linear[i]).to.be.eq(expectVal);
+        }
+    }); 
+    it("set/get shuffle data", async() => {
+        let expectVal;
+        for (let i = 0; i< arr1000shuffle.length; i++) {
+            await MockContractInstance.set(arr1000shuffle[i], arr1000shuffle[i]);
+        }
+        for (let i = 0; i< arr1000shuffle.length; i++) {
+            expectVal = await MockContractInstance.get(arr1000shuffle[i]);
+            await expect(arr1000shuffle[i]).to.be.eq(expectVal);
+        }
+    }); 
+    it("set/get batch linear data", async() => {
+        await MockContractInstance.setBatch(arr1000linear, arr1000linear);
+        let expectVals = await MockContractInstance.getBatch(arr1000linear);
+
+        for (let i = 0; i< expectVals.length; i++) {
+            await expect(arr1000linear[i]).to.be.eq(expectVals[i]);
+        }
+    }); 
+    it("set/get batch shuffle data", async() => {
+        await MockContractInstance.setBatch(arr1000shuffle, arr1000shuffle);
+        let expectVals = await MockContractInstance.getBatch(arr1000shuffle);
+        for (let i = 0; i< expectVals.length; i++) {
+            await expect(arr1000shuffle[i]).to.be.eq(expectVals[i]);
+        }
+    }); 
+
 // set mapping 1000
 // get mapping 1000
 // set packed 1000
 // get packed 1000
 // get batch packed 1000
 // set batch packed 1000
-
+/*
 describe("with linear data items", function () {
     var arr;
     
@@ -78,75 +126,87 @@ describe("with linear data items", function () {
         arr = arr1000linear;
         
     });
-    it("set mapping 1000", async() => {
-        console.log("arr[0]=",arr[0]);
+    it("set/get", async() => {
+        let expectVal;
+        for (let i = 0; i< arr.length; i++) {
+            await MockContractInstance.set(arr[i], arr[i]);
+        }
+        for (let i = 0; i< arr.length; i++) {
+            expectVal = await MockContractInstance.get(arr[i]);
+            await expect(arr[i]).to.be.eq(expectVal);
+        }
+    }); 
+    xit("set mapping 1000", async() => {
         for (let i = 0; i< arr.length; i++) {
             await MockContractInstance.setMapping1000(arr[i], arr[i]);
         }
     }); 
-    // it("get mapping 1000", async() => {
+    // xit("get mapping 1000", async() => {
     //     for (let i = 0; i< arr.length; i++) {
     //         await MockContractInstance.getMapping1000(BigNumber.from(arr[i]));
     //     }
     // }); 
-    it("set packed 1000", async() => {
+    xit("set packed 1000", async() => {
         for (let i = 0; i< arr.length; i++) {
             await MockContractInstance.setPacked1000(BigNumber.from(arr[i]), BigNumber.from(arr[i]));
         }
     }); 
-    // it("get packed 1000", async() => {
+    // xit("get packed 1000", async() => {
     //     for (let i = 0; i< arr.length; i++) {
     //         await MockContractInstance.getPacked1000(BigNumber.from(arr[i]));
     //     }
     // }); 
-    it("set batch packed 1000", async() => {
+    xit("set batch packed 1000", async() => {
         await MockContractInstance.setBatchPacked1000(arr, arr);
     }); 
-    // it("get batch packed 1000", async() => {
+    // xit("get batch packed 1000", async() => {
     //     await MockContractInstance.getBatchPacked1000(arr);
     // }); 
-    it("set loop batch packed 1000", async() => {
-        await MockContractInstance.setLoopBatchPacked1000(arr, arr);
-    }); 
+    
 });
+
 describe("with shuffle data items", function () {
     var arr;
     var Mock222ContractInstance;
+
     beforeEach("set vars", async() => {
         arr = arr1000shuffle;
-
     });
-    it("set mapping 1000", async() => {
-        console.log("arr[0]=",arr[0]);
+
+    xit("set mapping 1000", async() => {
         for (let i = 0; i< arr.length; i++) {
             await MockContractInstance.setMapping1000Shuffle(arr[i], arr[i]);
         }
     }); 
-//     it("get mapping 1000", async() => {
-//         for (let i = 0; i< arr.length; i++) {
-//             await MockContractInstance.getMapping1000Shuffle(BigNumber.from(arr[i]));
-//         }
-//     }); 
-    it("set packed 1000", async() => {
+
+    //     xit("get mapping 1000", async() => {
+    //         for (let i = 0; i< arr.length; i++) {
+    //             await MockContractInstance.getMapping1000Shuffle(BigNumber.from(arr[i]));
+    //         }
+    //     }); 
+
+    xit("set packed 1000", async() => {
         for (let i = 0; i< arr.length; i++) {
             await MockContractInstance.setPacked1000Shuffle(BigNumber.from(arr[i]), BigNumber.from(arr[i]));
         }
     }); 
-//     it("get packed 1000", async() => {
-//         for (let i = 0; i< arr.length; i++) {
-//             await MockContractInstance.getPacked1000Shuffle(BigNumber.from(arr[i]));
-//         }
-//     }); 
-    it("set batch packed 1000", async() => {
+
+    //     xit("get packed 1000", async() => {
+    //         for (let i = 0; i< arr.length; i++) {
+    //             await MockContractInstance.getPacked1000Shuffle(BigNumber.from(arr[i]));
+    //         }
+    //     }); 
+
+    xit("set batch packed 1000", async() => {
         await MockContractInstance.setBatchPacked1000Shuffle(arr, arr);
     }); 
-//     it("get batch packed 1000", async() => {
-//         await MockContractInstance.getBatchPacked1000Shuffle(arr);
-//     }); 
-    it("set loop batch packed 1000", async() => {
-        await MockContractInstance.setLoopBatchPacked1000Shuffle(arr, arr);
-    }); 
+
+    //     xit("get batch packed 1000", async() => {
+    //         await MockContractInstance.getBatchPacked1000Shuffle(arr);
+    //     }); 
+
+
 });
-    
+  */  
 
 });

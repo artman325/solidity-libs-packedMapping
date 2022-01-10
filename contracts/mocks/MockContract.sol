@@ -65,9 +65,6 @@ contract MockContract {
         values = x.getBatch(keys);
     }
 
-    function setLoopBatchPacked1000(uint256[] memory keys, uint16[] memory values) public {
-        x.setLoopBatch(keys,values);
-    }
     /////////////////////
     function setMapping1000Shuffle(uint256 key, uint16 value) public {
         list[key] = value;
@@ -88,8 +85,5 @@ contract MockContract {
         values = x.getBatch(keys);
     }
 
-    function setLoopBatchPacked1000Shuffle(uint256[] memory keys, uint16[] memory values) public {
-        x.setLoopBatch(keys,values);
-    }
     /////////////////////
 }
