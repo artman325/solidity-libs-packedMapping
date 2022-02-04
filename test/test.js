@@ -60,11 +60,51 @@ describe("Staking contract tests", function () {
 
 
     beforeEach("deploying", async() => {
-        MockContractFactory = await ethers.getContractFactory("MockContract");
+
+        const PackedSet = await ethers.getContractFactory("PackedSet");
+        const library = await PackedSet.deploy();
+        await library.deployed();
+
+        MockContractFactory = await ethers.getContractFactory("MockContract", {
+            // libraries: {
+            //     PackedSet:library.address
+            // }
+        });
+
+
         MockContractInstance = await MockContractFactory.deploy();
         
     });
+it("set/get", async() => {
+        // let key = 1;
+        // let val = 3;
+        // await MockContractInstance.set(key, val);
+        
 
+        // let expectVal = await MockContractInstance.__push_get(key);
+        // await expect(val).to.be.eq(expectVal);
+
+let arrVal = [11,12,13,14];
+let arrVal2Remove = [12];
+let N = arrVal.length + 1;
+for(let j = 0; j<arrVal.length;j++) {
+    console.log(await MockContractInstance.isContain(arrVal[j]));
+    await MockContractInstance.add(arrVal[j]);
+    console.log(await MockContractInstance.isContain(arrVal[j]));
+    console.log((await MockContractInstance.getZeroSlot()).toHexString());for(let i = 0; i<N;i++) {console.log(i+'= ', await MockContractInstance.get(i));console.log("==================================================");}
+}
+for(let j = 0; j<arrVal2Remove.length;j++) {
+    console.log(await MockContractInstance.isContain(arrVal2Remove[j]));
+    await MockContractInstance.remove(arrVal2Remove[j]);
+    console.log(await MockContractInstance.isContain(arrVal2Remove[j]));
+    console.log((await MockContractInstance.getZeroSlot()).toHexString());for(let i = 0; i<N;i++) {console.log(i+'= ', await MockContractInstance.get(i));console.log("==================================================");}
+}
+
+// await expect(val).to.be.eq(expectVal);
+
+        
+    }); 
+/*
     it("set/get", async() => {
         let key = 1;
         let val = 3;
@@ -111,7 +151,7 @@ describe("Staking contract tests", function () {
             await expect(arr1000shuffle[i]).to.be.eq(expectVals[i]);
         }
     }); 
-
+*/
 // set mapping 1000
 // get mapping 1000
 // set packed 1000
